@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Graph Paper Math: learn and practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f6fa;--grid:#d5dfec;--card:#fffffe;--ink:#14213d;--pencil:#5b6678;--hi:#ffd84d;--hi-ink:#14213d;--ok:#1f7a4d;--bad:#c4302b;--line:#14213d22;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0f1626;--grid:#1b2740;--card:#16203a;--ink:#eaf0fb;--pencil:#9aa7bf;--hi:#ffd84d;--hi-ink:#14213d;--ok:#5fd39b;--bad:#ff7b72;--line:#eaf0fb26}}
+:root[data-theme="dark"]{--paper:#0f1626;--grid:#1b2740;--card:#16203a;--ink:#eaf0fb;--pencil:#9aa7bf;--hi:#ffd84d;--hi-ink:#14213d;--ok:#5fd39b;--bad:#ff7b72;--line:#eaf0fb26}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:18px/1.6 Newsreader,Georgia,serif}
+.wrap{max-width:980px;margin:0 auto;padding:28px 18px 60px}
+h1,h2,h3,button,.tab{font-family:"Bricolage Grotesque","Trebuchet MS",sans-serif}
+h1{font-size:clamp(2.2rem,7vw,3.6rem);line-height:1;margin:0 0 8px;font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--pencil);margin:0 0 22px;max-width:52ch}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px}
+.tab{flex:0 0 auto;border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:700;font-size:15px}
+.tab[aria-selected="true"]{background:var(--hi);color:var(--hi-ink)}
+.tab small{display:block;font-weight:500;font-size:12px;opacity:.75}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:20px;box-shadow:5px 5px 0 var(--line)}
+h2{margin:0 0 10px;font-size:1.5rem}
+.rule{background:var(--hi);color:var(--hi-ink);padding:2px 8px;font-weight:600;display:inline-block;margin:4px 0}
+.ex{border-left:4px solid var(--ink);padding:2px 0 2px 14px;margin:14px 0;color:var(--pencil)}
+.q{font:800 clamp(1.8rem,6vw,2.6rem)/1.2 "Bricolage Grotesque",sans-serif;margin:8px 0 14px;overflow-wrap:anywhere}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1 1 140px;min-width:0;font:700 1.3rem "Bricolage Grotesque",sans-serif;padding:10px 12px;border:2px solid var(--ink);border-radius:6px;background:var(--paper);color:var(--ink)}
+button.go{background:var(--ink);color:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:10px 18px;font-weight:700;font-size:1rem;cursor:pointer}
+button.alt{background:transparent;color:var(--ink)}
+:focus-visible{outline:3px solid var(--bad);outline-offset:2px}
+.fb{min-height:3.2em;margin-top:12px;font-weight:600}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.fb span{display:block;font-weight:400;color:var(--pencil)}
+.bar{height:14px;border:2px solid var(--ink);border-radius:7px;background:var(--paper);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--hi);width:0;transition:width .3s}
+.stats{display:flex;justify-content:space-between;font-size:15px;color:var(--pencil)}
+.foot{margin-top:22px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;color:var(--pencil);font-size:15px}
+.foot button{font-size:14px;padding:6px 12px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Graph Paper Math</h1>
+  <p class="sub">Read a short lesson, then practice with fresh problems every time. Your progress is saved in this browser.</p>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="grid">
+    <section class="card" aria-live="polite"><div id="lesson"></div></section>
+    <section class="card">
+      <h2>Practice</h2>
+      <div class="q" id="q"></div>
+      <div class="row">
+        <input id="a" autocomplete="off" inputmode="text" aria-label="Your answer" placeholder="Your answer">
+        <button class="go" id="check">Check answer</button>
+      </div>
+      <div class="fb" id="fb" role="status"></div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="stats"><span id="st"></span><span id="mastery"></span></div>
+    </section>
+  </div>
+  <div class="foot"><span>Reach 80% over your last 10 answers to master a topic.</span><button class="go alt" id="reset">Reset progress</button></div>
+</main>
+<script>
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const T={
+arith:{name:"Arithmetic",sub:"+ − × ÷",
+ lesson:`<h2>Arithmetic: the four operations</h2><p>Multiplication and division are done before addition and subtraction, working left to right.</p><div class="rule">× and ÷ first, then + and −</div><div class="ex">Example: 3 + 4 × 5<br>Multiply first: 4 × 5 = 20<br>Then add: 3 + 20 = 23</div><p>Division is the reverse of multiplication. To check 56 ÷ 7, ask which number times 7 gives 56. It is 8.</p>`,
+ gen(){const t=R(0,3);let a,b,c;
+  if(t==0){a=R(12,99);b=R(12,99);return{q:`${a} + ${b}`,ans:a+b,why:`${a} + ${b} = ${a+b}`}}
+  if(t==1){a=R(40,150);b=R(11,39);return{q:`${a} − ${b}`,ans:a-b,why:`${a} − ${b} = ${a-b}`}}
+  if(t==2){a=R(3,12);b=R(3,12);c=R(2,9);return{q:`${c} + ${a} × ${b}`,ans:c+a*b,why:`Multiply first: ${a} × ${b} = ${a*b}. Then ${c} + ${a*b} = ${c+a*b}.`}}
+  b=R(3,12);c=R(3,12);return{q:`${b*c} ÷ ${b}`,ans:c,why:`${b} × ${c} = ${b*c}, so ${b*c} ÷ ${b} = ${c}.`}}},
+frac:{name:"Fractions",sub:"simplify & add",
+ lesson:`<h2>Fractions</h2><p>A fraction is a part of a whole. The bottom number says how many equal parts there are. The top says how many you have.</p><div class="rule">Divide top and bottom by their greatest common factor</div><div class="ex">Simplify 12/18<br>The greatest common factor of 12 and 18 is 6.<br>12 ÷ 6 = 2 and 18 ÷ 6 = 3, so 12/18 = 2/3.</div><p>To add fractions with the same bottom number, add the tops and keep the bottom: 2/9 + 4/9 = 6/9 = 2/3. Type fractions like <b>2/3</b>.</p>`,
+ gen(){if(R(0,1)){const g=R(2,7);let n=R(1,8),d=R(n+1,12);while(gcd(n,d)!=1){n=R(1,8);d=R(n+1,12)}
+   return{q:`Simplify ${n*g}/${d*g}`,ans:`${n}/${d}`,why:`Both numbers divide by ${g}: ${n*g}/${d*g} = ${n}/${d}.`}}
+  const d=R(5,12);const a=R(1,d-2),b=R(1,d-1-a);const s=a+b,g=gcd(s,d);
+  return{q:`${a}/${d} + ${b}/${d}`,ans:g==d?`${s/g}`:`${s/g}/${d/g}`,why:`Add the tops: ${a} + ${b} = ${s}, giving ${s}/${d}.${g>1?` Simplify by ${g}.`:""}`}}},
+alg:{name:"Algebra",sub:"solve for x",
+ lesson:`<h2>Algebra: solving for x</h2><p>An equation is a balance. Whatever you do to one side, do to the other, until x stands alone.</p><div class="rule">Undo the + or − first, then undo the ×</div><div class="ex">Solve 3x + 4 = 19<br>Subtract 4 from both sides: 3x = 15<br>Divide both sides by 3: x = 5</div><p>Check by putting your answer back in: 3 × 5 + 4 = 19. ✓</p>`,
+ gen(){const a=R(2,9),x=R(-6,12),b=R(1,15),neg=R(0,1);const c=a*x+(neg?-b:b);
+  return{q:`${a}x ${neg?"−":"+"} ${b} = ${c}`,ans:x,why:`${neg?"Add":"Subtract"} ${b}: ${a}x = ${c+(neg?b:-b)}. Divide by ${a}: x = ${x}.`}}},
+geo:{name:"Geometry",sub:"area & perimeter",
+ lesson:`<h2>Geometry: area and perimeter</h2><p>Perimeter is the distance around a shape. Area is the space inside it, measured in square units.</p><div class="rule">Rectangle: area = length × width</div><div class="ex">A rectangle is 7 by 4.<br>Area = 7 × 4 = 28<br>Perimeter = 2 × (7 + 4) = 22</div><p>A triangle is half of a rectangle, so its area is ½ × base × height.</p>`,
+ gen(){const t=R(0,2),l=R(3,15),w=R(2,12);
+  if(t==0)return{q:`Area of a ${l} by ${w} rectangle`,ans:l*w,why:`${l} × ${w} = ${l*w}.`};
+  if(t==1)return{q:`Perimeter of a ${l} by ${w} rectangle`,ans:2*(l+w),why:`2 × (${l} + ${w}) = ${2*(l+w)}.`};
+  const b=2*R(2,9),h=R(3,12);return{q:`Area of a triangle, base ${b}, height ${h}`,ans:b*h/2,why:`½ × ${b} × ${h} = ${b*h/2}.`}}}
+};
+let S={cur:"arith",hist:{}},P=null,done=false;
+try{const s=localStorage.getItem("gpm1");if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const save=()=>{try{localStorage.setItem("gpm1",JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const hist=k=>S.hist[k]||(S.hist[k]=[]);
+function mast(k){const h=hist(k).slice(-10);return h.length?Math.round(100*h.filter(Boolean).length/h.length):0}
+function tabs(){$("tabs").innerHTML=Object.keys(T).map(k=>`<button class="tab" role="tab" data-k="${k}" aria-selected="${k==S.cur}">${T[k].name}<small>${mast(k)}% · ${T[k].sub}</small></button>`).join("");
+ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{S.cur=b.dataset.k;save();render()})}
+function next(){P=T[S.cur].gen();done=false;$("q").textContent=P.q;$("a").value="";$("fb").textContent="";$("fb").className="fb";$("check").textContent="Check answer";$("a").focus({preventScroll:true})}
+function stats(){const h=hist(S.cur),m=mast(S.cur);$("bar").style.width=m+"%";$("st").textContent=`${h.filter(Boolean).length} correct of ${h.length} tried`;$("mastery").textContent=m>=80&&h.length>=10?"Mastered":`Last 10: ${m}%`;tabs()}
+function render(){tabs();$("lesson").innerHTML=T[S.cur].lesson;next();stats()}
+function norm(s){return s.trim().replace(/\s+/g,"").replace("−","-").replace(/^x=/i,"")}
+function check(){
+ if(done){next();return}
+ const v=norm($("a").value);if(!v){$("fb").className="fb bad";$("fb").textContent="Type an answer first.";return}
+ const ok=v===String(P.ans)||(typeof P.ans==="number"&&v!==""&&!isNaN(v)&&Number(v)===P.ans);
+ hist(S.cur).push(ok);S.hist[S.cur]=hist(S.cur).slice(-50);save();done=true;
+ $("fb").className="fb "+(ok?"ok":"bad");
+ $("fb").innerHTML=(ok?"Correct.":`Not quite. The answer is ${P.ans}.`)+`<span>${P.why}</span>`;
+ $("check").textContent="Next problem";stats()}
+$("check").onclick=check;
+$("a").addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+$("reset").onclick=()=>{S.hist={};save();render()};
+render();
+</script>
+</body>
+</html>
